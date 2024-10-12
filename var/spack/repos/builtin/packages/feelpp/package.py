@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack.package import *
+from spack.pkg.builtin.boost import Boost
 
 
 class Feelpp(CMakePackage):
@@ -49,7 +50,8 @@ class Feelpp(CMakePackage):
     depends_on("cmake@3.21:", type="build")
     depends_on("llvm@14.0.0:")
     depends_on("mpi")
-    depends_on("boost@1.74: +filesystem+iostreams+mpi+multithreaded+shared")
+    depends_on(Boost.with_default_variants)
+    depends_on("boost@1.74: +mpi+multithreaded+shared")
     depends_on("petsc@3.20 +mumps+hwloc+ptscotch +suite-sparse+hdf5 +hypre+kokkos")
     depends_on("slepc")
     depends_on("cln@1.3.6")
@@ -65,6 +67,7 @@ class Feelpp(CMakePackage):
     depends_on("ruby")
     depends_on("gmsh +opencascade+mmg+fltk")
     depends_on("curl")
+    depends_on("readline")
 
     # Python dependencies if +python variant is enabled
     depends_on("py-pytest", when="+python")
@@ -80,7 +83,7 @@ class Feelpp(CMakePackage):
     depends_on("py-ipykernel", when="+python")
     depends_on("py-mpi4py", when="+python")
     depends_on("py-tqdm", when="+python")
-    depends_on("python@3.7:", when="+python", type=("build", "run"))
+    depends_on("python@3.7:3.11", when="+python", type=("build", "run"))
 
     def get_preset_name(self):
         spec = self.spec
